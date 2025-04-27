@@ -96,6 +96,12 @@ describe(description: 'validate otp', tests: function () {
 });
 
 describe(description: 'exception', tests: function () {
+    it(description: 'validates identifier length', closure: function (string $identifier) {
+        Otp::generate(identifier: $identifier);
+    })->with([
+        str_repeat('too-long', 32).'@example.com',
+        '', // Too short
+    ])->throws(exception: ValidationException::class);
 
     it(description: 'throws an exception if the length is less than 4', closure: function () {
         config()->set(key: 'otp.length', value: 3);
